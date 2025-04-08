@@ -1,7 +1,16 @@
-const Navbar = () => {
+import Link from "next/link"
+
+const Navbar = async () => {
+
+  const isLoggedIn = true
+  const userid = 'vadimaty'
+
   return(
     <nav>
-      <h3>nav</h3>
+      <Link href={'/'}>Домашняя страница</Link>
+      <Link href={'about'}>О проекте</Link>
+      {isLoggedIn ? <Link href={`/profile/${userid}`}>profile pic</Link> : <Link href={`/login`}>Войти/Зарегистрироваться</Link>}
+      <Link href={''}></Link>
     </nav>
   )
 }
