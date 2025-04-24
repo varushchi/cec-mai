@@ -8,26 +8,39 @@
 
 .header{
   justify-self: center;
+  margin: 30px 0;
 }
 
 .table{
   width: 100%;
   padding-inline: 5%;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.column{
-  flex: 1 1 100%;
   flex-direction: column;
-  align-items: center;
-  min-width: 0;
+  justify-content: start;
+  gap: 50px;
 }
 
-@media (min-width: 1024px) {
-  .column {
-    flex: 1 1 calc(33.33% - 1rem);
-  }
+.cards{
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  
+}
+
+.link{
+  color: var(--color-blue);
+  font-size: var(--font-size-lg);
+  padding: 10px;
+  background-color: var(--color-gray-200);
+  border-radius: 9px;
+  transition: all 0.3s ease;
+}
+
+.link:hover{
+  background-color: var(--color-gray-300);
+}
+
+.header3{
+  margin-bottom: 20px;
 }

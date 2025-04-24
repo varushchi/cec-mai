@@ -1,0 +1,74 @@
+.card{
+  width: 300px;
+  height: 200px;
+  background-color: var(--color-gray-100);
+  color: var(--color-blue);
+  border-radius: min(10%, 24px);
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+}
+
+.card:hover{
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.title{
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+}
+
+.section{
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+}
+
+.section.active{
+  height: 95px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.link{
+  margin-top: auto;
+  align-self: flex-end;
+  padding: 5px;
+  background-color: var(--color-gray-300);
+  border-radius: 9px;
+  transition: all 0.3s ease;
+}
+
+.link:hover{
+  background-color: var(--color-blue);
+  color: var(--color-gray-100);
+}
+
+.progressContainer {
+  height: 20px;
+  background-color: var(--color-gray-300);
+  border-radius: 10px;
+  width: 100%;
+  position: relative;
+}
+
+.progressText{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-black);
+  font-size: 0.75rem;
+  font-weight: bold;
+  pointer-events: none; 
+}
+
+.progressBar {
+  height: 100%;
+  background-color: var(--color-blue); 
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}

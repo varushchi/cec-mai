@@ -1,35 +1,39 @@
 import Link from 'next/link'
 import React from 'react'
+import styles from './coursecard.module.css'
 
 interface Props{
   id: string,
   title: string,
-  type: "available" | "inprogress" | "completed"
+  type:  "inprogress" | "completed"
   isImported: boolean | null
   progress: string | null
 }
 
-const InprogressSection = ({progress} : {progress: string | null}) => {
+const InprogressSection = ({progress, id} : {progress: string | null, id: string}) => {
+  const progressValue = progress ? parseInt(progress) : 0;
   return(
-    <div>
-      <p>{progress}</p>
-      <Link href={'/'}>Продолжить курс</Link>
-    </div>
-  )
-}
-
-const AvailableSection = () => {
-  return(
-    <div>
-      <Link href={'/'}>Записаться на курс</Link>
+    <div className={`${styles.section} ${styles.active}`}>
+      <div className={styles.progressContainer}>
+        <div 
+          className={styles.progressBar}
+          style={{ width: `${progressValue}%` }}
+          aria-valuenow={progressValue}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
+          <p className={styles.progressText}>{progressValue}%</p>
+        </div>
+      </div>
+      <Link className={styles.link} href={`/courses/${id}`}>Продолжить курс</Link>
     </div>
   )
 }
 
 const CompletedSection = ({isImported}: {isImported: boolean | null}) => {
   return(
-    <div>
-      {!isImported ? <Link href={'/'}>Сертификат</Link> : null}
+    <div className={styles.section}>
+      {!isImported ? <Link className={styles.link} href={'/'}>Сертификат</Link> : null}
     </div>
   )
 }
@@ -37,15 +41,14 @@ const CompletedSection = ({isImported}: {isImported: boolean | null}) => {
 export default function CourseCard(props: Props) {
 
     const sectionMap = {
-      available: <AvailableSection />,
-      inprogress: <InprogressSection progress={props.progress}/>,
+      inprogress: <InprogressSection progress={props.progress} id= {props.id}/>,
       completed: <CompletedSection isImported={props.isImported}/>
     };
 
 
   return (
-    <div>
-      <p>{props.title}</p>
+    <div className={styles.card} id={props.id}>
+      <p className={styles.title}>{props.title}</p>
       {sectionMap[props.type]}
     </div>
   )
