@@ -30,10 +30,10 @@ const InprogressSection = ({progress, id} : {progress: string | null, id: string
   )
 }
 
-const CompletedSection = ({isImported}: {isImported: boolean | null}) => {
+const CompletedSection = ({isImported, id}: {isImported: boolean | null, id: string}) => {
   return(
     <div className={styles.section}>
-      {!isImported ? <Link className={styles.link} href={'/'}>Сертификат</Link> : null}
+      {!isImported ? <Link className={styles.link} href={`/certificate/${id}`}>Сертификат</Link> : null}
     </div>
   )
 }
@@ -42,7 +42,7 @@ export default function CourseCard(props: Props) {
 
     const sectionMap = {
       inprogress: <InprogressSection progress={props.progress} id= {props.id}/>,
-      completed: <CompletedSection isImported={props.isImported}/>
+      completed: <CompletedSection isImported={props.isImported} id= {props.id}/>
     };
 
 

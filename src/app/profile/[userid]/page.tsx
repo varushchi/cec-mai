@@ -3,7 +3,7 @@ import NotLoggedIn from '@/pages/NotLoggedIn'
 import { useParams } from 'next/navigation'
 import styles from './page.module.css'
 import Link from 'next/link'
-import CourseCard from '@/components/CourseCard'
+import CourseCard from '@/components/CourseCard/CourseCard'
 
 export default function Profile() {
   const params = useParams<{userid: string}>()
@@ -68,13 +68,14 @@ export default function Profile() {
         </div>
         <div className={styles.column}>
           <h3 className={styles.header3}>Завершенные</h3>
-          <div className={styles.cards}>
+          <div className={`${styles.cards} ${styles.completed}`} >
           {completed.map(course => {
             return(
               <CourseCard {...course} key={course.id}/>
             )
           })}
           </div>
+          <Link className={`${styles.link}`} href={'/import'}>Импортировать курс</Link>
         </div>
       </section>
     </div>
