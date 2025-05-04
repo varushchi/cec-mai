@@ -3,6 +3,7 @@
   --color-black: #171717;
   --color-blue: #377dff;
   --color-blue-official: #0095DA;
+  --color-red: #ed4c78;
   --color-gray: #8c98a4;
   --color-gray-100: #f7faff;
   --color-gray-200: #f8fafd;
@@ -15,6 +16,7 @@
   --color-gray-900: #1e2022;
 
   --font-size-base: 1rem;
+  --font-size-xs: 0.75rem;  
   --font-size-sm: 0.875rem;  
   --font-size-md: 1rem;      
   --font-size-lg: 1.25rem;   
@@ -57,6 +59,7 @@ a {
 
 button {
   background-color: inherit;
+  color: inherit;
   border: none;
   font-family: inherit;
   font-size: inherit;

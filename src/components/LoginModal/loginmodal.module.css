@@ -1,52 +1,58 @@
-.navitem {
-  color: var(--color-gray-800);
-  transition: all 0.3s ease;
-  font-weight: bold;
-  position: relative;
-  text-decoration: none; 
-  display: inline-block; 
-  padding-bottom: 5px; 
+.form{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 30px 100px;
 }
 
-.navitem:hover {
-  color: var(--color-blue);
+.input{
+  padding: 0.625rem 1rem;
+  font-size: var(--font-size-lg);
+  border: 1px solid var(--color-gray-500);
+  border-radius: 10px;
 }
 
-.navitem.active {
-  position: relative;
+.input:focus{
+  outline: 2px solid var(--color-blue);
+  border: none;
 }
 
-.navitem.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: var(--color-gray-800);
-  transform-origin: left center;
-  animation: underline 0.3s ease forwards;
-  transition: background-color 0.3s ease;
+.input.error{
+  outline: 2px solid var(--color-red);
+  border: none;
 }
 
-.navitem.active:hover::after {
+.errorMsg{
+  color: var(--color-red);
+  font-size: var(--font-size-xs);
+}
+
+.sign{
+  margin-top: 15px;
   background-color: var(--color-blue);
-}
-
-.navitem:not(.active):hover::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  font-size: var(--font-size-lg);
+  color: var(--color-white);
   width: 100%;
-  height: 2px;
-  background-color: var(--color-blue);
-  transform: scaleX(0);
-  transform-origin: right center;
-  transition: transform 0.3s ease;
+  padding: 15px;
+  border-radius: 10px;
+  transition: all ease 0.3s;
 }
 
-.navitem:not(.active):hover::after {
-  transform: scaleX(1);
-  transform-origin: left center;
+.sign:hover{
+  filter: brightness(1.1);
 }
+
+.changeType{
+  align-self: center;
+  width: fit-content;
+  margin-top: 15px;
+  transition: all ease 0.3s;
+  border-bottom: 1px solid transparent;
+}
+
+.changeType:hover{
+  border-bottom: 1px solid var(--color-gray-700);
+}
+
+
+

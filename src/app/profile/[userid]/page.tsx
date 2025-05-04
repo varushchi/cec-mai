@@ -4,20 +4,21 @@ import { useParams } from 'next/navigation'
 import styles from './page.module.css'
 import Link from 'next/link'
 import CourseCard from '@/components/CourseCard/CourseCard'
+import { useAppSelector } from '@/store/hooks'
 
 export default function Profile() {
   const params = useParams<{userid: string}>()
-  const currentUserid = 'vadimaty'
-  if (currentUserid !== params?.userid) {
+  const {user} = useAppSelector(state => state.user)
+  if (!user || user.id !== params?.userid) {
     return <NotLoggedIn />
   }
 
   const courses: {
     id: string,
-  title: string,
-  type:  "inprogress" | "completed"
-  isImported: boolean | null
-  progress: string | null
+    title: string,
+    type:  "inprogress" | "completed"
+    isImported: boolean | null
+    progress: string | null
   }[] = [
     {
       id: '1',
