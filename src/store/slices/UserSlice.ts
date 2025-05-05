@@ -1,6 +1,6 @@
 // store/userSlice.ts
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { User } from '../schemas/UserSchema'
+import { User, LoginPayload, RegisterPayload } from '../schemas/UserSchema'
 
 interface UserState {
   user: User | null
@@ -37,13 +37,20 @@ const userSlice = createSlice({
 
 export const loginUser = createAsyncThunk(
   'user/login',
-  async (credentials: User, { dispatch }) => {
+  async (credentials: LoginPayload | RegisterPayload, { dispatch }) => {
     dispatch(loginStart())
     try {
-      const user = await {user: credentials}
-      dispatch(loginSuccess(user))
+      const res = await fetch('http://localhost/ppproject/public/api/generate-user-token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+      });
+      console.log(res)
+      // dispatch(loginSuccess(user))
     } catch (error) {
-      dispatch(loginFailure(error))
+      dispatch(loginFailure(error instanceof Error ? error.message : String(error)))
     }
   }
 )

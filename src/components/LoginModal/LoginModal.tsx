@@ -168,7 +168,7 @@ export default function LoginModal() {
       surname: 'shigol',
       email: inputValue.email
     }
-    dispatch(loginUser(user))
+    dispatch(loginUser(inputValue))
     dispatch(closeModal())
     setInputValue({email: '', password: '', confirmPassword: '', name: '', surname: ''})
     setError({message: null, type: null})
@@ -193,7 +193,7 @@ export default function LoginModal() {
       surname: 'shigol',
       email: inputValue.email
     }
-    dispatch(loginUser(user))
+    dispatch(loginUser(inputValue))
     dispatch(closeModal())
     setInputValue({email: '', password: '', confirmPassword: '', name: '', surname: ''})
     setError({message: null, type: null})
