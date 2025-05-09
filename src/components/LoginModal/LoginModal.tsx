@@ -1,6 +1,7 @@
 'use client'
 
 import { Modal } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import styles from './loginmodal.module.css'
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
@@ -15,9 +16,10 @@ interface formProps {
   hadleChange : (e: React.ChangeEvent<HTMLInputElement>) => void
   error: {message: string | null, type: string | number | null}
   handleSigntype: (type: string) => void
+  loading: boolean
 }
 
-const SignIn = ({handleSubmit, inputValue, hadleChange, error, handleSigntype}: formProps) => {
+const SignIn = ({handleSubmit, inputValue, hadleChange, error, handleSigntype, loading}: formProps) => {
 
   return(
     <form className={styles.form} noValidate onSubmit={handleSubmit}>
@@ -31,7 +33,9 @@ const SignIn = ({handleSubmit, inputValue, hadleChange, error, handleSigntype}: 
         value={inputValue.email}
         onChange={hadleChange}
       />
-      {error.type === 'email' ? <p className={styles.errorMsg}>{error.message}</p> : null}
+      {error.type === 'email' 
+      ? <p className={styles.errorMsg}>{error.message}</p>
+      : null}
       <label htmlFor='password'>Пароль</label>
       <input
         className={`${styles.input} ${error.type === 'password' ? styles.error : ''}`}
@@ -42,14 +46,29 @@ const SignIn = ({handleSubmit, inputValue, hadleChange, error, handleSigntype}: 
         value={inputValue.password}
         onChange={hadleChange}
       />
-      {error.type === 'password' ? <p className={styles.errorMsg}>{error.message}</p> : null}
-      <button type='submit' className={styles.sign}>Войти</button>
-      <button onClick={() => handleSigntype('SignUp')} className={styles.changeType}>У меня нет аккаунта</button>
+      {error.type === 'password'
+        ? <p className={styles.errorMsg}>{error.message}</p>
+        : null}
+      <button
+        type='submit'
+        className={`${styles.sign}
+        ${error.type === 'server' ? styles.errorButton : ''}`}>
+          Войти 
+          {loading ? <LoadingOutlined /> : null}
+      </button>
+      {error.message && (error.type === 'server' || !error.type)
+        ? <p className={`${styles.errorMsg} ${styles.errButtonMsg}`}>{error.message}</p>
+        : null}
+      <button
+        onClick={() => handleSigntype('SignUp')}
+        className={styles.changeType}>
+          У меня нет аккаунта
+      </button>
     </form>
   )
 }
 
-const SignUp = ({handleSubmit, inputValue, hadleChange, error, handleSigntype}: formProps) => {
+const SignUp = ({handleSubmit, inputValue, hadleChange, error, handleSigntype, loading}: formProps) => {
 
   return(
     <form className={styles.form} noValidate onSubmit={handleSubmit}>
@@ -63,7 +82,9 @@ const SignUp = ({handleSubmit, inputValue, hadleChange, error, handleSigntype}: 
         value={inputValue.name}
         onChange={hadleChange}
       />
-      {error.type === 'name' ? <p className={styles.errorMsg}>{error.message}</p> : null}
+      {error.type === 'name'
+        ? <p className={styles.errorMsg}>{error.message}</p>
+        : null}
       <label htmlFor='surname'>Фамилия</label>
       <input
         className={`${styles.input} ${error.type === 'surname' ? styles.error : ''}`}
@@ -74,7 +95,9 @@ const SignUp = ({handleSubmit, inputValue, hadleChange, error, handleSigntype}: 
         value={inputValue.surname}
         onChange={hadleChange}
       />
-      {error.type === 'surname' ? <p className={styles.errorMsg}>{error.message}</p> : null}
+      {error.type === 'surname'
+        ? <p className={styles.errorMsg}>{error.message}</p>
+        : null}
       <label htmlFor='email'>Почта</label>
       <input
         className={`${styles.input} ${error.type === 'email' ? styles.error : ''}`}
@@ -85,10 +108,12 @@ const SignUp = ({handleSubmit, inputValue, hadleChange, error, handleSigntype}: 
         value={inputValue.email}
         onChange={hadleChange}
       />
-      {error.type === 'email' ? <p className={styles.errorMsg}>{error.message}</p> : null}
+      {error.type === 'email'
+        ? <p className={styles.errorMsg}>{error.message}</p>
+        : null}
       <label htmlFor='password'>Пароль</label>
       <input
-        className={`${styles.input} ${error.type === 'password' ? styles.error : ''}`}
+        className={`${styles.input} ${error.type === 'password' || error.type === 'confirmPassword' ? styles.error : ''}`}
         placeholder='••••••••'
         id='password'
         type='password'
@@ -96,10 +121,12 @@ const SignUp = ({handleSubmit, inputValue, hadleChange, error, handleSigntype}: 
         value={inputValue.password}
         onChange={hadleChange}
       />
-      {error.type === 'password' ? <p className={styles.errorMsg}>{error.message}</p> : null}
+      {error.type === 'password'
+        ? <p className={styles.errorMsg}>{error.message}</p>
+        : null}
       <label htmlFor='confirmPassword'>Подтвердить пароль</label>
       <input
-        className={`${styles.input} ${error.type === 'password' ? styles.error : ''}`}
+        className={`${styles.input} ${error.type === 'confirmPassword' ? styles.error : ''}`}
         placeholder='••••••••'
         id='confirmPassword'
         type='password'
@@ -107,15 +134,31 @@ const SignUp = ({handleSubmit, inputValue, hadleChange, error, handleSigntype}: 
         value={inputValue.confirmPassword}
         onChange={hadleChange}
       />
-      <button type='submit' className={styles.sign}>Зарегестрироваться</button>
-      <button onClick={() => handleSigntype('SignIn')} className={styles.changeType}>У меня уже есть аккаунт</button>
+      {error.type === 'confirmPassword'
+      ? <p className={styles.errorMsg}>{error.message}</p>
+      : null}
+      <button
+        type='submit'
+        className={`${styles.sign} ${error.type === 'server' ? styles.errorButton : ''}`}>
+          Зарегестрироваться
+          {loading ? <LoadingOutlined /> : null}
+      </button>
+      {error.message && (error.type === 'server' || !error.type)
+        ? <p className={`${styles.errorMsg} ${styles.errButtonMsg}`}>{error.message}</p>
+        : null}
+      <button
+        onClick={() => handleSigntype('SignIn')}
+        className={styles.changeType}>
+          У меня уже есть аккаунт
+      </button>
     </form>
   )
 }
 
 export default function LoginModal() {
 
-  const modal = useAppSelector(state => state.modal)
+  const modalState = useAppSelector(state => state.modal)
+  const userState = useAppSelector(state => state.user)
   const dispatch = useAppDispatch()
   const [signType, setSignType] = useState('SignIn')
   const [inputValue, setInputValue] = useState({
@@ -126,8 +169,8 @@ export default function LoginModal() {
     surname: ''
   })
   const [error, setError] = useState<{message: string | null, type: string | number | null}>({
-    message: '',
-    type: ''
+    message: null,
+    type: null
   })
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -143,67 +186,65 @@ export default function LoginModal() {
     setError({message: null, type: null})
   }
 
-  function handleSignUp(e: React.FormEvent<HTMLFormElement>){
+  async function handleSign(e: React.FormEvent<HTMLFormElement>, type: 'SignIn' | 'SignUp'){
     e.preventDefault()
+    setError({message: null, type: null})
     try{
       LoginSchema.parse({email: inputValue.email, password: inputValue.password})
-      NameSchema.parse({name: inputValue.name, surname: inputValue.surname})
+      if (type === 'SignUp') {
+        NameSchema.parse({name: inputValue.name, surname: inputValue.surname})
+        if (inputValue.password !== inputValue.confirmPassword) {
+          throw new ZodError([
+            {
+              code: 'custom',
+              path: ['confirmPassword'],
+              message: 'Пароли не совпадают'
+            }
+          ])
+        }
+      }
     } catch (err){
       if (err instanceof ZodError){
         setError({message: err.errors[0]?.message || "Ошибка ввода", type: err.errors[0].path[0]})
       } else {
         setError({message: 'Непредвиденная ошибка ввода', type: null})
       }
-      return
     }
 
-    if (inputValue.password !== inputValue.confirmPassword){
-      setError({message: 'Пароли не совпадают', type: 'password'})
-      return
-    }
-    
-    const user = {
-      id: inputValue.email.length.toLocaleString(),
-      name: 'vadim',
-      surname: 'shigol',
-      email: inputValue.email
-    }
-    dispatch(loginUser(inputValue))
-    dispatch(closeModal())
-    setInputValue({email: '', password: '', confirmPassword: '', name: '', surname: ''})
-    setError({message: null, type: null})
-  }
-
-  function handleSignIn(e: React.FormEvent<HTMLFormElement>){
-    e.preventDefault()
     try{
-      LoginSchema.parse({email: inputValue.email, password: inputValue.password})
-    } catch (err){
-      if (err instanceof ZodError){
-        setError({message: err.errors[0]?.message || "Ошибка ввода", type: err.errors[0].path[0]})
-      } else {
-        setError({message: 'Непредвиденная ошибка ввода', type: null})
-      }
-      return
-    }
-    
-    const user = {
-      id: inputValue.email.length.toLocaleString(),
-      name: 'vadim',
-      surname: 'shigol',
-      email: inputValue.email
-    }
-    dispatch(loginUser(inputValue))
+      const userData = type === 'SignUp' 
+      ? {
+          email: inputValue.email,
+          password: inputValue.password,
+          name: inputValue.name,
+          surname: inputValue.surname
+        }
+      : {
+          email: inputValue.email,
+          password: inputValue.password
+        }
+
+    await dispatch(loginUser(userData)).unwrap()
+
     dispatch(closeModal())
-    setInputValue({email: '', password: '', confirmPassword: '', name: '', surname: ''})
-    setError({message: null, type: null})
+    setInputValue({
+      email: '',
+      password: '',
+      confirmPassword: '',
+      name: '',
+      surname: ''
+    })
+
+    } catch(err) {
+      setError({message: `Непредвиденная ошибка сервера: ${err}`, type: 'server'})
+    }
   }
   
   return (
     <div>
       <Modal
         title={signType === 'SignIn' ? 'Войти' : 'Зарегестрироваться'}
-        open={modal.isOpen}
+        open={modalState.isOpen}
         onCancel={() => dispatch(closeModal())}
         onClose={() => dispatch(closeModal())}
         width='min(80%, 600px)'
@@ -213,18 +254,20 @@ export default function LoginModal() {
       <div>
         {signType === 'SignIn' ? 
         <SignIn
-          handleSubmit={handleSignIn}
+          handleSubmit={(e) => handleSign(e, 'SignIn')}
           inputValue={inputValue}
           hadleChange={handleChange}
           error={error}
           handleSigntype={(type: string) => setSignType(type)}
+          loading={userState.loading}
         /> :
         <SignUp
-          handleSubmit={handleSignUp}
+          handleSubmit={(e) => handleSign(e, 'SignUp')}
           inputValue={inputValue}
           hadleChange={handleChange}
           error={error}
           handleSigntype={(type: string) => setSignType(type)}
+          loading={userState.loading}
         />}
       </div>
       </Modal>

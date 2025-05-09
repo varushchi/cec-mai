@@ -36,6 +36,18 @@
   padding: 15px;
   border-radius: 10px;
   transition: all ease 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.sign.errorButton{
+  outline: 3px solid var(--color-red);
+}
+
+.errorMsg.errButtonMsg{
+  align-self: center;
 }
 
 .sign:hover{

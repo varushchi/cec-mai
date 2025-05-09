@@ -5,13 +5,11 @@ import { User, LoginPayload, RegisterPayload } from '../schemas/UserSchema'
 interface UserState {
   user: User | null
   loading: boolean;
-  error: string | null;
 }
 
 const initialState: UserState = {
   user: null,
   loading: false,
-  error: null,
 };
 
 const userSlice = createSlice({
@@ -25,9 +23,8 @@ const userSlice = createSlice({
       state.user = action.payload.user
       state.loading = false
     },
-    loginFailure: (state, action) => {
+    loginFailure: (state) => {
       state.loading = false
-      state.error = action.payload
     },
     logout: (state) => {
       state.user = null
@@ -37,7 +34,7 @@ const userSlice = createSlice({
 
 export const loginUser = createAsyncThunk(
   'user/login',
-  async (credentials: LoginPayload | RegisterPayload, { dispatch }) => {
+  async (credentials: LoginPayload | RegisterPayload, { rejectWithValue, dispatch }) => {
     dispatch(loginStart())
     try {
       const res = await fetch('http://localhost/ppproject/public/api/generate-user-token', {
@@ -47,13 +44,28 @@ export const loginUser = createAsyncThunk(
         },
         body: JSON.stringify(credentials),
       });
-      console.log(res)
-      // dispatch(loginSuccess(user))
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        dispatch(loginFailure())
+        return rejectWithValue(errorData.message || `HTTP ошибка! статус: ${res.status}`);
+      }
+
+      const data = await res.json();
+      
+      if (!data.token) {
+        dispatch(loginFailure())
+        return rejectWithValue('Ошибка? Токен не был получен');
+        
+      }
+
+      return data;
     } catch (error) {
-      dispatch(loginFailure(error instanceof Error ? error.message : String(error)))
+      dispatch(loginFailure())
+      return rejectWithValue(error instanceof Error ? error.message : 'Неизвествная ошибка сервера');
     }
   }
-)
+);
 
 export const { loginStart, loginSuccess, loginFailure, logout } = userSlice.actions;
 export default userSlice.reducer;

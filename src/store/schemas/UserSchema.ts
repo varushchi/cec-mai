@@ -30,6 +30,7 @@ export const LoginSchema = z.object({
 
 export const RegisterSchema = z.object({
   name: Name,
+  surname: Surname,
   email: MaiEmail,
   password: Password
 })
