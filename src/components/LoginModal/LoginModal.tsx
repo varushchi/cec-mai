@@ -15,7 +15,7 @@ interface formProps {
   inputValue: {email: string, password: string, confirmPassword: string, name: string, surname: string}
   hadleChange : (e: React.ChangeEvent<HTMLInputElement>) => void
   error: {message: string | null, type: string | number | null}
-  handleSigntype: (type: string) => void
+  handleSigntype: (type: 'SignIn' | 'SignUp' | null) => void
   loading: boolean
 }
 
@@ -160,7 +160,7 @@ export default function LoginModal() {
   const modalState = useAppSelector(state => state.modal)
   const userState = useAppSelector(state => state.user)
   const dispatch = useAppDispatch()
-  const [signType, setSignType] = useState('SignIn')
+  const [signType, setSignType] = useState<'SignIn' | 'SignUp' | null>('SignIn')
   const [inputValue, setInputValue] = useState({
     email: '',
     password: '',
@@ -248,7 +248,7 @@ export default function LoginModal() {
         onCancel={() => dispatch(closeModal())}
         onClose={() => dispatch(closeModal())}
         width='min(80%, 600px)'
-        style={{top: 20}}
+        style={signType === 'SignUp' ? {top: 30} : undefined}
         footer={[]}
       >
       <div>
@@ -258,7 +258,7 @@ export default function LoginModal() {
           inputValue={inputValue}
           hadleChange={handleChange}
           error={error}
-          handleSigntype={(type: string) => setSignType(type)}
+          handleSigntype={(type) => setSignType(type)}
           loading={userState.loading}
         /> :
         <SignUp
@@ -266,7 +266,7 @@ export default function LoginModal() {
           inputValue={inputValue}
           hadleChange={handleChange}
           error={error}
-          handleSigntype={(type: string) => setSignType(type)}
+          handleSigntype={(type) => setSignType(type)}
           loading={userState.loading}
         />}
       </div>

@@ -1,7 +1,7 @@
 .card{
   width: 300px;
   height: 200px;
-  background-color: var(--color-gray-100);
+  background-color: var(--color-gray-300);
   color: var(--color-blue);
   border-radius: min(10%, 24px);
   display: flex;

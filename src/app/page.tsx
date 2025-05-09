@@ -1,7 +1,86 @@
+'use client'
+import CourseCard from "@/components/CourseCard/CourseCard";
+import { useAppDispatch } from "@/store/hooks";
+import { openModal } from "@/store/slices/ModalSlice";
+import Link from "next/link";
+import styles from './page.module.css'
+
+const courses: {
+  id: string,
+  title: string,
+  type:  "available"
+  isImported: boolean | null
+  progress: string | null
+}[] = [
+  {
+    id: '1',
+    title: 'python1',
+    type: 'available',
+    progress: '85',
+    isImported: null
+  },
+  {
+    id: '2',
+    title: 'python2',
+    type: 'available',
+    progress: '5',
+    isImported: null
+  },
+  {
+    id: '3',
+    title: 'python3',
+    type: 'available',
+    progress: null,
+    isImported: null
+
+  },
+]
+
 const Home = () => {
+
+  const dispatch = useAppDispatch()
+
   return (
-    <div>
-      <h1>Home page</h1>
+    <div className={styles.main}>
+      <h1 className={styles.header}>Мониторинг повышения квалификации преподавателей</h1>
+      <p className={`${styles.paragraph} ${styles.bold}`}>Дипломный проект студентов МАИ 307 кафедры</p>
+      <p className={styles.paragraph}>Приложение для препадаветелей МАИ повысить свою квалификацию в области программирования и получить сертикат</p>
+      <div className={styles.container}>
+        <p className={styles.paragraph}>Чтобы пройти курсы нужно быть зарегестированным пользвателем</p>
+        <p className={styles.paragraph}>Мы собираем статистику</p>
+        <button
+          onClick={() => dispatch(openModal({modalType: 'login'}))}
+          className={styles.openModal}
+        >
+          Войти/Зарегестрироваться
+        </button>
+      </div>
+      
+      <div className={styles.container}>
+        <p className={`${styles.paragraph} ${styles.bold}`}>Доступны курсы по Python</p>
+        <div
+          className={styles.courses}
+          style={{
+            width: `max(calc(${courses.length} * 300px), 90%)`
+          }}
+        >
+          {courses.map((course, index) => {
+            return(
+              <div
+                key={course.id}
+                className={styles.course}
+                style={{
+                  animationDelay: `calc(30s / ${courses.length} * (${courses.length} - ${index + 1}) * -1)`,
+                  left: `max(calc(300px * ${courses.length}), 100%)`
+                }}
+                >
+                <CourseCard {...course}/>
+              </div>
+            )
+          })}
+        </div>
+        <Link className={styles.link} href={'/courses'}>Перейти к курсам</Link>
+      </div>
     </div>
   );
 }

@@ -56,10 +56,10 @@ export const loginUser = createAsyncThunk(
       if (!data.token) {
         dispatch(loginFailure())
         return rejectWithValue('Ошибка? Токен не был получен');
-        
       }
 
-      return data;
+      dispatch(loginSuccess({user: data.user}))
+
     } catch (error) {
       dispatch(loginFailure())
       return rejectWithValue(error instanceof Error ? error.message : 'Неизвествная ошибка сервера');

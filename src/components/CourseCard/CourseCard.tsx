@@ -5,12 +5,12 @@ import styles from './coursecard.module.css'
 interface Props{
   id: string,
   title: string,
-  type:  "inprogress" | "completed"
+  type: "available" | "inprogress" | "completed"
   isImported: boolean | null
   progress: string | null
 }
 
-const InprogressSection = ({progress, id} : {progress: string | null, id: string}) => {
+const InprogressSection = ({ progress, id } : { progress: string | null, id: string }) => {
   const progressValue = progress ? parseInt(progress) : 0;
   return(
     <div className={`${styles.section} ${styles.active}`}>
@@ -30,7 +30,7 @@ const InprogressSection = ({progress, id} : {progress: string | null, id: string
   )
 }
 
-const CompletedSection = ({isImported, id}: {isImported: boolean | null, id: string}) => {
+const CompletedSection = ({ isImported, id }: { isImported: boolean | null, id: string }) => {
   return(
     <div className={styles.section}>
       {!isImported ? <Link className={styles.link} href={`/certificate/${id}`}>Сертификат</Link> : null}
@@ -38,12 +38,22 @@ const CompletedSection = ({isImported, id}: {isImported: boolean | null, id: str
   )
 }
 
+
+const AvailableSection = ({ id }: { id: string }) => {
+  return(
+    <div className={styles.section}>
+      <Link className={styles.link} href={`/courses/${id}`}>Перейти к курсу</Link>
+    </div>
+  )
+}
+
 export default function CourseCard(props: Props) {
 
     const sectionMap = {
-      inprogress: <InprogressSection progress={props.progress} id= {props.id}/>,
-      completed: <CompletedSection isImported={props.isImported} id= {props.id}/>
-    };
+      inprogress: <InprogressSection progress={props.progress} id={props.id}/>,
+      completed: <CompletedSection isImported={props.isImported} id={props.id}/>,
+      available: <AvailableSection id={props.id}/>
+    }
 
 
   return (

@@ -14,13 +14,14 @@
   --color-gray-700: #677788;
   --color-gray-800: #71869d;
   --color-gray-900: #1e2022;
+  --color-footer: #253258;
 
-  --font-size-base: 1rem;
-  --font-size-xs: 0.75rem;  
-  --font-size-sm: 0.875rem;  
-  --font-size-md: 1rem;      
-  --font-size-lg: 1.25rem;   
-  --font-size-xl: 1.563rem;  
+  --font-size-base: 14px;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.563rem;
   --font-size-xxl: 1.953rem;
   --font-size-xxxl: 2.441rem;
 
@@ -44,6 +45,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-size: var(--font-size-base);
   line-height: var(--line-height-base);
+  white-space: pre-wrap;
 }
 
 * {
@@ -67,4 +69,22 @@ button {
   margin: 0;
   text-align: center;
   text-justify: center;
+}
+
+@media (max-width: 992px) {
+  :root {
+    --font-size-base: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --font-size-base: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --font-size-base: 11px;
+  }
 }
