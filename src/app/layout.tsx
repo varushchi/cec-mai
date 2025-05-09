@@ -32,7 +32,9 @@ export default function RootLayout({
         <ReduxProvider>
           <Navbar />
           <LoginModal />
-          {children}
+          <div style={{flex: 1}}>
+            {children}
+          </div>
           <Footer />
         </ReduxProvider>
       </body>

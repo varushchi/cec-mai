@@ -6,6 +6,10 @@
   gap: 40px
 }
 
+.header{
+  font-size: var(--font-size-xxxl);
+}
+
 .container{
   display: flex;
   flex-direction: column;
@@ -33,10 +37,12 @@
 
 .paragraph{
   font-size: var(--font-size-lg);
+  text-align: center;
 }
 
 .paragraph.bold{
   font-weight: bold;
+  font-size: var(--font-size-xl);
 }
 
 .courses{

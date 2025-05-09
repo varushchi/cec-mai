@@ -209,10 +209,11 @@ export default function LoginModal() {
       } else {
         setError({message: 'Непредвиденная ошибка ввода', type: null})
       }
+      return
     }
 
     try{
-      const userData = type === 'SignUp' 
+      const userData = type === 'SignUp'
       ? {
           email: inputValue.email,
           password: inputValue.password,

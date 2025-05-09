@@ -44,7 +44,7 @@ const Home = () => {
     <div className={styles.main}>
       <h1 className={styles.header}>Мониторинг повышения квалификации преподавателей</h1>
       <p className={`${styles.paragraph} ${styles.bold}`}>Дипломный проект студентов МАИ 307 кафедры</p>
-      <p className={styles.paragraph}>Приложение для препадаветелей МАИ повысить свою квалификацию в области программирования и получить сертикат</p>
+      <p className={styles.paragraph}>Приложение для препадаветелей МАИ повысить свою квалификацию <br/> в области программирования и получить сертикат</p>
       <div className={styles.container}>
         <p className={styles.paragraph}>Чтобы пройти курсы нужно быть зарегестированным пользвателем</p>
         <p className={styles.paragraph}>Мы собираем статистику</p>

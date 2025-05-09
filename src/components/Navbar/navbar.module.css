@@ -5,16 +5,22 @@
   align-items: center;
   justify-content: space-around;
   background-color: var(--color-gray-200);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
 }
 
 .navitem {
   color: var(--color-gray-800);
   transition: all 0.3s ease;
+  font-size: var(--font-size-md);
   font-weight: bold;
   position: relative;
-  text-decoration: none; 
-  display: inline-block; 
-  padding-bottom: 5px; 
+  text-decoration: none;
+  display: inline-block;
+  padding-bottom: 5px;
 }
 
 .navitem:hover {
