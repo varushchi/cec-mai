@@ -2,7 +2,7 @@
 import { z } from 'zod'
 
 const Name = z.string().min(2, "Имя должно быть длиннее 2х символов").transform(val => val.trim())
-const Surname = z.string().min(2, "Фамилия должна быть длиннее 2х символов").transform(val => val.trim())
+const Surname = z.string().min(2, "Фамилия должна быть длиннее 2х символов").transform(val => val.trim()).optional()
 const MaiEmail = z.string().email("Неверный формат почты")
   .transform(val => val.trim().toLowerCase())
   .refine(
@@ -12,7 +12,7 @@ const MaiEmail = z.string().email("Неверный формат почты")
 const Password = z.string().min(8, "Пароль должен содержать хотя бы 8 символов").transform(val => val.trim())
 
 export const UserSchema = z.object({
-  id: z.string(),
+  user_id: z.string(),
   name: Name,
   surname: Surname,
   email: MaiEmail
