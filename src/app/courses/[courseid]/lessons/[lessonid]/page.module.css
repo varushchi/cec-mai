@@ -1,0 +1,37 @@
+.main{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  margin-inline: auto;
+  margin-top: 100px;
+  gap: 50px;
+}
+
+.content{
+  font-size: var(--font-size-md);
+  width: 60%;
+  background-color: var(--color-gray-300);
+  color: var(--color-gray-900);
+  padding: 40px 20px;
+  border-radius: 20px;
+}
+
+.navigation{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 60%;
+}
+
+.navButton{
+  padding: 20px;
+  border-radius: 20px;
+  background-color: var(--color-gray-300);
+  color: var(--color-blue);
+  transition: all 0.3s ease;
+}
+
+.navButton:hover{
+  background-color: var(--color-gray-400);
+}

@@ -3,10 +3,12 @@ import { CourseProps, ModulesProps } from '@/types/types'
 import type { CollapseProps } from 'antd';
 import { Collapse } from 'antd';
 import Link from 'next/link';
+import styles from './page.module.css'
 
 const course: CourseProps = {
   id: '1',
   title: 'python1',
+  description: 'description for python 1'
 }
 
 const modules: ModulesProps[] = [
@@ -29,9 +31,9 @@ const modules: ModulesProps[] = [
 
 function Module({index, title, id, course_id}: {index: number, title: string, id: number, course_id: number}) {
   return(
-    <Link href={`/courses/${course_id}/lessons/${id}`}>
-      <p>{index}</p>
-      <p>{title}</p>
+    <Link className={styles.link} href={`/courses/${course_id}/lessons/${id}`}>
+      <p className={styles.index}>{index}</p>
+      <p className={styles.title}>{title}</p>
     </Link>
   )
 }
@@ -53,15 +55,17 @@ export default function Course() {
   const items: CollapseProps['items'] = [
     {
       key: '1',
-      label: course.title,
-      children: modulesElem
-    }
+      label: `Модули ${course.title}`,
+      children: modulesElem,
+      classNames: {header: styles.coolapseHeader, body: styles.collapseBody}
+    },
   ]
 
   return (
-    <div>
-      <Collapse items={items} />;
-
+    <div className={styles.main}>
+      <h1>Модули {course.title}</h1>
+      <p className={styles.description}>{course.description}</p>
+      <Collapse items={items} className={styles.collapse}/>
     </div>
   )
 }

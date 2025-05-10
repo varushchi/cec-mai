@@ -61,7 +61,7 @@ const Navbar = () => {
       <Link className={`${styles.navitem} ${pathname?.includes('/courses') ? styles.active : ''}`} href={'/courses'}>Курсы</Link>
       {user ?
       <ProfilePic name={username} userid={user.user_id} handleLog={handleLog}/> :
-      <button className={styles.navitem} onClick={() => dispatch(openModal({modalType: 'login'}))}>Войти/Зарегистрироваться</button>}
+      <button className={styles.navitem} onClick={() => dispatch(openModal({modalType: 'login'}))}>Войти</button>}
       
     </nav>
   )

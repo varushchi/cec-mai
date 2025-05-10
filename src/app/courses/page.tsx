@@ -4,9 +4,10 @@ import React from 'react'
 import { memo } from 'react'
 import { CourseProps } from '@/types/types'
 import CourseCard from '@/components/CourseCard/CourseCard'
+import styles from './page.module.css'
 
 
-const courses: CourseProps[]   = [
+let courses: CourseProps[]   = [
   {
     id: '1',
     title: 'python1',
@@ -27,6 +28,7 @@ const courses: CourseProps[]   = [
   },
 ]
 
+
 const CoursesWOUser = memo(function CoursesWOUser({ courses }: { courses: CourseProps[] }) {
 
   const coursesELem = courses.map(course => {
@@ -35,10 +37,14 @@ const CoursesWOUser = memo(function CoursesWOUser({ courses }: { courses: Course
     )
   })
   return (
-    <div>
-      <div>
-        <p>Доступные</p>
-        {coursesELem}
+    <div className={styles.container}>
+      <div className={styles.column}>
+        <p className={styles.sectionName}>Доступные</p>
+        <div className={styles.courses}>
+          {coursesELem.length > 0 ?
+            coursesELem :
+            <p className={styles.empty}>...Пусто...</p>}
+        </div>
       </div>
     </div>
   )
@@ -49,30 +55,42 @@ const CoursesWUser = memo(function CoursesWUser({ courses }: { courses: CoursePr
   const completedElem = courses.filter(course => course.status === 'completed')
   const inprogressElem = courses.filter(course => course.status === 'inprogress')
   return(
-    <div>
-      <div>
-        <p>Доступные</p>
-        {availableElem.map(course => {
-          return(
-            <CourseCard {...course} key={course.id} />
-          )
-        })}
+    <div className={styles.container}>
+      <div className={styles.column}>
+        <p className={styles.sectionName}>Доступные</p>
+        <div className={styles.courses}>
+          {availableElem.length > 0 ?
+            availableElem.map(course => {
+              return(
+                <CourseCard {...course} key={course.id} />
+              )
+            }) :
+            <p className={styles.empty}>...Пусто...</p>}
+        </div>
       </div>
-      <div>
-        <p>В процессе</p>
-        {completedElem.map(course => {
-          return(
-            <CourseCard {...course} key={course.id} />
-          )
-        })}
+      <div className={styles.column}>
+        <p className={styles.sectionName}>В процессе</p>
+        <div className={styles.courses}>
+          {inprogressElem.length > 0 ?
+            inprogressElem.map(course => {
+              return(
+                <CourseCard {...course} key={course.id} />
+              )
+            }) :
+            <p className={styles.empty}>...Пусто...</p>}
+        </div>
       </div>
-      <div>
-      <p>Завершенные</p>
-        {inprogressElem.map(course => {
-          return(
-            <CourseCard {...course} key={course.id} />
-          )
-        })}
+      <div className={styles.column}>
+      <p className={styles.sectionName}>Завершенные</p>
+      <div className={styles.courses}>
+          {completedElem.length > 0 ?
+            completedElem.map(course => {
+              return(
+                <CourseCard {...course} key={course.id} />
+              )
+            }) :
+            <p className={styles.empty}>...Пусто...</p>}
+        </div>
       </div>
     </div>
   )
@@ -83,15 +101,12 @@ export default function Courses() {
   const { user } = useAppSelector(state => state.user)
 
     return (
-      <div>
-        <h1>Курсы</h1>
-        <div>
+      <div className={styles.main}>
+        <h1 className={styles.header}>Курсы Python</h1>
           {user ?
             <CoursesWUser courses={courses}/> :
             <CoursesWOUser courses={courses}/>
           }
-        </div>
-
       </div>
     )
 }
