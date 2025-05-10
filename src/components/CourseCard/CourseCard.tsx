@@ -1,21 +1,14 @@
 import Link from 'next/link'
 import React from 'react'
 import styles from './coursecard.module.css'
+import { CourseProps } from '@/types/types'
 
-interface Props{
-  id: string,
-  title: string,
-  type: "available" | "inprogress" | "completed"
-  isImported: boolean | null
-  progress: string | null
-}
-
-const InprogressSection = ({ progress, id } : { progress: string | null, id: string }) => {
+const InprogressSection = ({ progress, id } : { progress?: string, id: string }) => {
   const progressValue = progress ? parseInt(progress) : 0;
   return(
     <div className={`${styles.section} ${styles.active}`}>
       <div className={styles.progressContainer}>
-        <div 
+        <div
           className={styles.progressBar}
           style={{ width: `${progressValue}%` }}
           aria-valuenow={progressValue}
@@ -30,7 +23,7 @@ const InprogressSection = ({ progress, id } : { progress: string | null, id: str
   )
 }
 
-const CompletedSection = ({ isImported, id }: { isImported: boolean | null, id: string }) => {
+const CompletedSection = ({ isImported, id }: { isImported?: boolean, id: string }) => {
   return(
     <div className={styles.section}>
       {!isImported ? <Link className={styles.link} href={`/certificate/${id}`}>Сертификат</Link> : null}
@@ -47,7 +40,7 @@ const AvailableSection = ({ id }: { id: string }) => {
   )
 }
 
-export default function CourseCard(props: Props) {
+export default function CourseCard(props: CourseProps) {
 
     const sectionMap = {
       inprogress: <InprogressSection progress={props.progress} id={props.id}/>,
@@ -59,7 +52,7 @@ export default function CourseCard(props: Props) {
   return (
     <div className={styles.card} id={props.id}>
       <p className={styles.title}>{props.title}</p>
-      {sectionMap[props.type]}
+      {props.status ? sectionMap[props.status]: sectionMap['available']}
     </div>
   )
 }

@@ -58,8 +58,8 @@ const Navbar = () => {
   return(
     <nav className={styles.nav}>
       <Link className={`${styles.navitem} ${pathname === '/' ? styles.active : ''}`} href={'/'}>Главная</Link>
-      <Link className={`${styles.navitem} ${pathname === '/courses' ? styles.active : ''}`} href={'/courses'}>Курсы</Link>
-      {user ? 
+      <Link className={`${styles.navitem} ${pathname?.includes('/courses') ? styles.active : ''}`} href={'/courses'}>Курсы</Link>
+      {user ?
       <ProfilePic name={username} userid={user.user_id} handleLog={handleLog}/> :
       <button className={styles.navitem} onClick={() => dispatch(openModal({modalType: 'login'}))}>Войти/Зарегистрироваться</button>}
       
