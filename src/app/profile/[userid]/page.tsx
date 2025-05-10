@@ -9,7 +9,7 @@ import { useAppSelector } from '@/store/hooks'
 export default function Profile() {
   const params = useParams<{userid: string}>()
   const {user} = useAppSelector(state => state.user)
-  if (!user || user.id !== params?.userid) {
+  if (!user || user.user_id !== params?.userid) {
     return <NotLoggedIn />
   }
 
