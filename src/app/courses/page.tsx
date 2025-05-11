@@ -45,30 +45,26 @@ const CoursesWUser = memo(function CoursesWUser({ courses }: { courses: CoursePr
             <p className={styles.empty}>...Пусто...</p>}
         </div>
       </div>
-      <div className={styles.column}>
-        <p className={styles.sectionName}>В процессе</p>
-        <div className={styles.courses}>
-          {inprogressElem.length > 0 ?
-            inprogressElem.map(course => {
-              return(
-                <CourseCard courses={course} key={course.id} />
-              )
-            }) :
-            <p className={styles.empty}>...Пусто...</p>}
+      {inprogressElem.length > 0 ? <div className={styles.column}>
+      <p className={styles.sectionName}>В процессе</p>
+      <div className={styles.courses}>
+          {inprogressElem.map(course => {
+            return(
+              <CourseCard courses={course} key={course.id} />
+            )
+            })}
         </div>
-      </div>
-      <div className={styles.column}>
+      </div>: null}
+      {completedElem.length > 0 ? <div className={styles.column}>
       <p className={styles.sectionName}>Завершенные</p>
       <div className={styles.courses}>
-          {completedElem.length > 0 ?
-            completedElem.map(course => {
-              return(
-                <CourseCard courses={course} key={course.id} />
-              )
-            }) :
-            <p className={styles.empty}>...Пусто...</p>}
+          {completedElem.map(course => {
+            return(
+              <CourseCard courses={course} key={course.id} />
+            )
+            })}
         </div>
-      </div>
+      </div>: null}
     </div>
   )
 })
