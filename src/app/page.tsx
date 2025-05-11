@@ -7,10 +7,10 @@ import { useEffect, useState } from "react";
 import { CourseProps } from '@/types/types'
 import CourseCardPlane from "@/components/CourseCardPlane/CourseCardPlane";
 
-const courses: CourseProps[]  = [
+const coursesHolder: CourseProps[]  = [
   {
     id: '1',
-    title: 'python1',
+    title: 'Python1 Basics',
     status: 'available',
     progress: '85',
   },
@@ -72,14 +72,14 @@ const Home = () => {
             width: `max(calc(${courses.length} * 300px), 90%)`
           }}
         >
-          {courses.map((course, index) => {
+          {coursesHolder.map((course, index) => {
             return(
               <div
                 key={course.id}
                 className={styles.course}
                 style={{
-                  animationDelay: `calc(30s / ${courses.length} * (${courses.length} - ${index + 1}) * -1)`,
-                  left: `max(calc(300px * ${courses.length}), 100%)`
+                  animationDelay: `calc(30s / ${coursesHolder.length} * (${coursesHolder.length} - ${index + 1}) * -1)`,
+                  left: `max(calc(300px * ${coursesHolder.length}), 100%)`
                 }}
                 >
                 <CourseCardPlane courses = {course}/>

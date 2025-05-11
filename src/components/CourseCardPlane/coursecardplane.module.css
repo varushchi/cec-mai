@@ -1,5 +1,6 @@
 .card {
   width: 300px;
+  height: 330px;
   text-align: center;
   background-color: var(--color-gray-300);
   color: var(--color-blue);
@@ -7,10 +8,11 @@
   display: flex;
   flex-direction: column;
   padding: 15px;
-  justify-content: space-between;
+  justify-content: center;
   transition: all 0.3s ease;
   position: relative;
-  margin: 100px auto;
+  clip-path: path("M64.8 131.875C28.35 131.875 19.44 146 0 165 19.44 188 28.35 199.375 64.8 199.375H100.44C137.7 233.125 162 283.75 186.3 300.625 198.45 250 162 233.125 162 199.375H234.9S234.9 216.25 269.73 250C265 195 260.1 171 275 175 275 165 275 170 275 160 260.1 162 265 155 273.78 87 234.9 115 247.05 120.6245 234.9 131.875M234.9 131.875H222.75 162C162 98.125 198.45 81.25 186.3 30.625 162 47.5 149.85 81.25 100.44 132");
+  transform-origin: center;
 }
 
 .card:hover {
@@ -20,44 +22,4 @@
 .title {
   font-size: var(--font-size-xl);
   font-weight: bold;
-}
-
-.bigWings {
-  position: absolute;
-  background-color: inherit;
-  height: 150px;
-  width: 40px;
-  z-index: -1;
-}
-
-.bigWings.left {
-  top: -100px;
-  left: 130px;
-  transform: rotate(30deg);
-}
-
-.bigWings.right {
-  bottom: -100px;
-  left: 130px;
-  transform: rotate(-30deg);
-}
-
-.smallWings {
-  position: absolute;
-  background-color: inherit;
-  height: 90px;
-  width: 30px;
-  z-index: -1;
-}
-
-.smallWings.left {
-  top: 10px;
-  right: -6px;
-  transform: rotate(-15deg);
-}
-
-.smallWings.right {
-  bottom: 10px;
-  right: -6px;
-  transform: rotate(15deg);
 }
