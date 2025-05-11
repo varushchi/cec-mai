@@ -8,19 +8,24 @@
   gap: 50px;
 }
 
-.content{
+.content {
   font-size: var(--font-size-md);
   width: 60%;
   background-color: var(--color-gray-300);
   color: var(--color-gray-900);
   padding: 40px 20px;
   border-radius: 20px;
+  border: 3px solid var(--color-gray-400);
+  height: 500px;
+  overflow-y: auto;
 }
 
 .navigation{
-  display: flex;
+  display: grid;
   align-items: center;
   justify-content: space-between;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 20px;
   width: 60%;
 }
 
@@ -30,8 +35,24 @@
   background-color: var(--color-gray-300);
   color: var(--color-blue);
   transition: all 0.3s ease;
+  font-size: var(--font-size-md);
 }
 
 .navButton:hover{
   background-color: var(--color-gray-400);
+}
+
+.navButtonBack{
+  grid-column: 1;
+}
+
+.navButtonForward{
+  grid-column: 3;
+}
+
+.pageNumber{
+  grid-column: 2;
+  text-align: center;
+  font-size: var(--font-size-md);
+  font-weight: bold;
 }

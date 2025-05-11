@@ -47,7 +47,7 @@
 
 .courses{
   margin-top: 30px;
-  height: 200px;
+  height: 600px;
   max-width: 1536px;
   margin-inline: auto;
   position: relative;
@@ -70,6 +70,7 @@
 
 .course{
   position: absolute;
+  top: 50%;
   left: 100%;
   animation: scrollLeft 30s linear infinite;
 }

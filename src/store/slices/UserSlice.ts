@@ -63,9 +63,12 @@ export const loginUser = createAsyncThunk(
       if (!data.token) {
         dispatch(loginFailure())
         return rejectWithValue('Ошибка? Токен не был получен');
+      } else {
+        localStorage.setItem('user_token', data.token)
       }
 
       dispatch(loginSuccess({user: data.user}))
+      
 
     } catch (error) {
       dispatch(loginFailure())

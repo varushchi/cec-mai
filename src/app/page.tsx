@@ -1,42 +1,46 @@
 'use client'
-import CourseCard from "@/components/CourseCard/CourseCard";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { openModal } from "@/store/slices/ModalSlice";
 import Link from "next/link";
 import styles from './page.module.css'
+import { useEffect, useState } from "react";
+import { CourseProps } from '@/types/types'
+import CourseCardPlane from "@/components/CourseCardPlane/CourseCardPlane";
 
-const courses: {
-  id: string,
-  title: string,
-  status:  "available"
-  isImported: boolean | null
-  progress: string | null
-}[] = [
+const courses: CourseProps[]  = [
   {
     id: '1',
     title: 'python1',
     status: 'available',
     progress: '85',
-    isImported: null
   },
   {
     id: '2',
     title: 'python2',
     status: 'available',
     progress: '5',
-    isImported: null
   },
   {
     id: '3',
     title: 'python3',
     status: 'available',
-    progress: null,
-    isImported: null
 
   },
 ]
 
 const Home = () => {
+
+  const [courses, setCourses] = useState<CourseProps[]>([])
+
+  useEffect(() => {
+    async function getCourses(){
+      const res = await fetch('http://localhost/ppproject/public/api/v1/pcourses')
+      const data = await res.json()
+      setCourses(data.data)
+    }
+
+    getCourses()
+  }, [])
 
   const dispatch = useAppDispatch()
   const {user} = useAppSelector(state => state.user)
@@ -78,7 +82,7 @@ const Home = () => {
                   left: `max(calc(300px * ${courses.length}), 100%)`
                 }}
                 >
-                <CourseCard {...course}/>
+                <CourseCardPlane courses = {course}/>
               </div>
             )
           })}

@@ -40,19 +40,19 @@ const AvailableSection = ({ id }: { id: string }) => {
   )
 }
 
-export default function CourseCard(props: CourseProps) {
+export default function CourseCard({courses}: { courses: CourseProps}) {
 
     const sectionMap = {
-      inprogress: <InprogressSection progress={props.progress} id={props.id}/>,
-      completed: <CompletedSection isImported={props.isImported} id={props.id}/>,
-      available: <AvailableSection id={props.id}/>
+      inprogress: <InprogressSection progress={courses?.progress} id={courses?.id}/>,
+      completed: <CompletedSection isImported={courses?.isImported} id={courses?.id}/>,
+      available: <AvailableSection id={courses?.id}/>
     }
 
 
   return (
-    <div className={styles.card} id={props.id}>
-      <p className={styles.title}>{props.title}</p>
-      {props.status ? sectionMap[props.status]: sectionMap['available']}
+    <div className={styles.card} id={courses?.id}>
+      <p className={styles.title}>{courses?.title}</p>
+      {courses?.status ? sectionMap[courses.status]: sectionMap['available']}
     </div>
   )
 }

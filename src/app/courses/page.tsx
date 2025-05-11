@@ -1,39 +1,16 @@
 'use client'
 import { useAppSelector } from '@/store/hooks'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { memo } from 'react'
 import { CourseProps } from '@/types/types'
 import CourseCard from '@/components/CourseCard/CourseCard'
 import styles from './page.module.css'
 
-
-let courses: CourseProps[]   = [
-  {
-    id: '1',
-    title: 'python1',
-    status: 'available',
-    progress: '85',
-  },
-  {
-    id: '2',
-    title: 'python2',
-    status: 'available',
-    progress: '5',
-  },
-  {
-    id: '3',
-    title: 'python3',
-    status: 'available',
-
-  },
-]
-
-
 const CoursesWOUser = memo(function CoursesWOUser({ courses }: { courses: CourseProps[] }) {
 
   const coursesELem = courses.map(course => {
     return(
-      <CourseCard {...course} key={course.id} />
+      <CourseCard courses={course} key={course.id} />
     )
   })
   return (
@@ -62,7 +39,7 @@ const CoursesWUser = memo(function CoursesWUser({ courses }: { courses: CoursePr
           {availableElem.length > 0 ?
             availableElem.map(course => {
               return(
-                <CourseCard {...course} key={course.id} />
+                <CourseCard courses={course} key={course.id} />
               )
             }) :
             <p className={styles.empty}>...Пусто...</p>}
@@ -74,7 +51,7 @@ const CoursesWUser = memo(function CoursesWUser({ courses }: { courses: CoursePr
           {inprogressElem.length > 0 ?
             inprogressElem.map(course => {
               return(
-                <CourseCard {...course} key={course.id} />
+                <CourseCard courses={course} key={course.id} />
               )
             }) :
             <p className={styles.empty}>...Пусто...</p>}
@@ -86,7 +63,7 @@ const CoursesWUser = memo(function CoursesWUser({ courses }: { courses: CoursePr
           {completedElem.length > 0 ?
             completedElem.map(course => {
               return(
-                <CourseCard {...course} key={course.id} />
+                <CourseCard courses={course} key={course.id} />
               )
             }) :
             <p className={styles.empty}>...Пусто...</p>}
@@ -98,7 +75,30 @@ const CoursesWUser = memo(function CoursesWUser({ courses }: { courses: CoursePr
 
 export default function Courses() {
 
-  const { user } = useAppSelector(state => state.user)
+   const [courses, setCourses] = useState<CourseProps[]>([])
+   const { user } = useAppSelector(state => state.user)
+  
+    useEffect(() => {
+      async function getCourses(){
+        const url = user ? 'http://localhost/ppproject/public/api/v1/courses' : 'http://localhost/ppproject/public/api/v1/pcourses'
+        const token = user ? localStorage.getItem('user_token') : ''
+        console.log(token)
+        const res = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        })
+        const data = await res.json()
+        console.log(data)
+        setCourses(data.data)
+      }
+  
+      getCourses()
+    }, [user])
+
+  
 
     return (
       <div className={styles.main}>

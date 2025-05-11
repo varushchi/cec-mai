@@ -1,33 +1,12 @@
-import React from 'react'
-import { CourseProps, ModulesProps } from '@/types/types'
+'use client'
+import React, { useState, useEffect } from 'react'
+import { CourseProps, ModulesProps, LessonsProps } from '@/types/types'
 import type { CollapseProps } from 'antd';
 import { Collapse } from 'antd';
 import Link from 'next/link';
 import styles from './page.module.css'
-
-const course: CourseProps = {
-  id: '1',
-  title: 'python1',
-  description: 'description for python 1'
-}
-
-const modules: ModulesProps[] = [
-  {
-    id: 1,
-    course_id: 1,
-    title: 'python 1 module 1'
-  },
-  {
-    id: 2,
-    course_id: 1,
-    title: 'python 1 module 2'
-  },
-  {
-    id: 3,
-    course_id: 1,
-    title: 'python 1 module 3'
-  },
-]
+import { useAppSelector } from '@/store/hooks';
+import { useParams } from 'next/navigation';
 
 function Module({index, title, id, course_id}: {index: number, title: string, id: number, course_id: number}) {
   return(
@@ -38,34 +17,134 @@ function Module({index, title, id, course_id}: {index: number, title: string, id
   )
 }
 
+function Lesson({index, title, id, course_id, module_id}: {index: number, title: string, id: number, course_id: string, module_id: number}) {
+  return(
+    <Link className={styles.link} href={`/courses/${course_id}/modules/${module_id}/lessons/${id}`}>
+      <p className={styles.index}>{index}</p>
+      <p className={styles.title}>{title}</p>
+    </Link>
+  )
+}
+
 export default function Course() {
 
-  const modulesElem = modules.map((module, index) => {
+  const { user } = useAppSelector(state => state.user)
+  const [modules, setModules] = useState<ModulesProps[]>([])
+  const courseid = useParams<{courseid: string}>()
+  const [course, setCourse] = useState<CourseProps>({
+  id: courseid?.courseid || '',
+  title: '',
+  description: ''
+  })
+  const [lessons, setLessons] = useState<LessonsProps[][]>([])
+
+  const getToken = (): string => localStorage.getItem('user_token') || ''
+
+  useEffect(() => {
+
+    if (!user || !course.id) return
+
+    async function GetCourse() {
+        const url = `http://localhost/ppproject/public/api/v1/courses/${course.id}`
+        const res = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${getToken()}`,
+            'Content-Type': 'application/json'
+          }
+        })
+        if (res.ok){
+          const data = await res.json()
+          setCourse(data)
+        }
+      }
+
+    GetCourse()
+
+  }, [user, courseid])
+
+  useEffect(() => {
+    if (!user || !course?.id) return
+
+    async function getModules(){
+      const url = `http://localhost/ppproject/public/api/v1/courses/${course.id}/modules`
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${getToken()}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      const data = await res.json()
+      setModules(data.data)
+    }
+
+    getModules()
+
+  }, [user, course?.id])
+
+  useEffect(() => {
+    if (!user || !course?.id || modules.length === 0) return
+
+    async function getLessons(module_id: number){
+      const url = `http://localhost/ppproject/public/api/v1/modules/${module_id}/lessons`
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${getToken()}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      const data = await res.json()
+      setLessons((prev) => [...prev, data.data]);
+    }
+
+    modules.forEach(module => getLessons(module.id))
+
+  }, [user, course?.id, modules])
+
+  const lessonsElem = lessons.map(lessonsInModule => {
     return(
-      <Module
-        index={index+1}
-        title={module.title}
-        key={index}
-        id={module.id}
-        course_id={module.course_id}
-      />
+      lessonsInModule.map((lesson, index) => {
+        return(
+          <Lesson
+            index={index+1}
+            title={lesson.title}
+            key={index}
+            id={lesson.id}
+            course_id={course.id}
+            module_id={lesson.module_id}
+          />
+        )
+      })
     )
   })
 
-  const items: CollapseProps['items'] = [
+  const modulesElem = modules.map((module, index) => {
+    const items: CollapseProps['items'] = [
     {
-      key: '1',
-      label: `Модули ${course.title}`,
-      children: modulesElem,
+      key: index + 1,
+      label: `Модуль ${module?.title}`,
+      children: lessonsElem[index],
       classNames: {header: styles.coolapseHeader, body: styles.collapseBody}
     },
   ]
+    return(
+      <Collapse items={items} className={styles.collapse}/>
+    )
+  })
+
+  
 
   return (
     <div className={styles.main}>
-      <h1>Модули {course.title}</h1>
-      <p className={styles.description}>{course.description}</p>
-      <Collapse items={items} className={styles.collapse}/>
+      <h1>Модули {course?.title}</h1>
+      <p className={styles.description}>{course?.description}</p>
+      <div className={styles.modules}>
+        {modulesElem}
+      </div>
+
+      
     </div>
   )
 }

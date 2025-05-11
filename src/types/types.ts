@@ -21,6 +21,11 @@ export type LessonsProps = {
   id: number,
   module_id: number,
   title: string,
-  content: string | null,
   order: number,
+}
+
+export type PagesProps = {
+  id: number,
+  lesson_id: number,
+  content: string,
 }
