@@ -56,3 +56,16 @@
   font-size: var(--font-size-md);
   font-weight: bold;
 }
+
+.link {
+  background-color: var(--color-gray-300);
+  color: var(--color-blue);
+  font-size: var(--font-size-lg);
+  padding: 20px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.link:hover{
+  background-color: var(--color-gray-400);
+}

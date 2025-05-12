@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react'
-import { CourseProps, ModulesProps, LessonsProps } from '@/types/types'
+import { CourseProps, ModulesProps, LessonsProps, TestsProps } from '@/types/types'
 import type { CollapseProps } from 'antd';
 import { Collapse } from 'antd';
 import Link from 'next/link';
@@ -8,18 +8,18 @@ import styles from './page.module.css'
 import { useAppSelector } from '@/store/hooks';
 import { useParams } from 'next/navigation';
 
-function Module({index, title, id, course_id}: {index: number, title: string, id: number, course_id: number}) {
+function Lesson({index, title, id, course_id, module_id}: {index: number, title: string, id: number, course_id: string, module_id: number}) {
   return(
-    <Link className={styles.link} href={`/courses/${course_id}/lessons/${id}`}>
+    <Link className={styles.link} href={`/courses/${course_id}/modules/${module_id}/lessons/${id}`}>
       <p className={styles.index}>{index}</p>
       <p className={styles.title}>{title}</p>
     </Link>
   )
 }
 
-function Lesson({index, title, id, course_id, module_id}: {index: number, title: string, id: number, course_id: string, module_id: number}) {
+function Test({index, title, id, course_id}: {index: number, title: string, id: number, course_id: number}) {
   return(
-    <Link className={styles.link} href={`/courses/${course_id}/modules/${module_id}/lessons/${id}`}>
+    <Link className={styles.link} href={`/courses/${course_id}/tests/${id}`}>
       <p className={styles.index}>{index}</p>
       <p className={styles.title}>{title}</p>
     </Link>
@@ -37,6 +37,7 @@ export default function Course() {
   description: ''
   })
   const [lessons, setLessons] = useState<LessonsProps[][]>([])
+  const [tests, setTests] = useState<TestsProps[]>([])
 
   const getToken = (): string => localStorage.getItem('user_token') || ''
 
@@ -84,6 +85,26 @@ export default function Course() {
   }, [user, course?.id])
 
   useEffect(() => {
+    if (!user || !course?.id) return
+
+    async function getTests(){
+      const url = `http://localhost/ppproject/public/api/v1/courses/${course.id}/tests`
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${getToken()}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      const data = await res.json()
+      setTests(data.data)
+    }
+
+    getTests()
+
+  }, [user, course?.id])
+
+  useEffect(() => {
     if (!user || !course?.id || modules.length === 0) return
 
     async function getLessons(module_id: number){
@@ -121,7 +142,7 @@ export default function Course() {
   })
 
   const modulesElem = modules.map((module, index) => {
-    const items: CollapseProps['items'] = [
+    const Lessonitems: CollapseProps['items'] = [
     {
       key: index + 1,
       label: `Модуль ${module?.title}`,
@@ -130,21 +151,40 @@ export default function Course() {
     },
   ]
     return(
-      <Collapse items={items} className={styles.collapse}/>
+      <Collapse items={Lessonitems} className={styles.collapse} key={index}/>
     )
   })
 
-  
+  const testElem = tests.map((test, index) => {
+    return (
+      <Test key={index} index={index+1} title={test.title} course_id={test.course_id} id={test.id}/>
+    )
+  })
+
+   const Testitems: CollapseProps['items'] = [
+    {
+      key: 1,
+      label: `Тесты по ${course?.title}`,
+      children: testElem,
+      classNames: {header: styles.coolapseHeader, body: styles.collapseBody}
+    },
+  ]
 
   return (
-    <div className={styles.main}>
-      <h1>Модули {course?.title}</h1>
-      <p className={styles.description}>{course?.description}</p>
-      <div className={styles.modules}>
-        {modulesElem}
-      </div>
-
-      
-    </div>
+    <main className={styles.main}>
+      <section className={styles.section}>
+        <h1>Модули {course?.title}</h1>
+        <p className={styles.description}>{course?.description}</p>
+        <div className={styles.modules}>
+          {modulesElem}
+        </div>
+      </section>
+      <section className={styles.section}>
+        <h1>Тесты {course?.title}</h1>
+        <div className={styles.tests}>
+          <Collapse items={Testitems} className={styles.collapse}/>
+        </div>
+      </section>
+    </main>
   )
 }

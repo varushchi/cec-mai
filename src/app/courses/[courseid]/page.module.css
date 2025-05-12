@@ -8,6 +8,14 @@
   gap: 50px;
 }
 
+.section{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  gap: 40px;
+}
+
 .collapseHeader{
   color: var(--color-gray-900);
 }
@@ -43,7 +51,7 @@
   padding-left: 30px ;
 }
 
-.modules{
+.modules, .tests{
   display: flex;
   flex-direction: column;
   align-items: center;

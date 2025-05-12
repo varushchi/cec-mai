@@ -4,12 +4,13 @@ import { LessonsProps, PagesProps } from '@/types/types'
 import styles from './page.module.css'
 import { useAppSelector } from '@/store/hooks'
 import { useParams } from 'next/navigation'
+import Link from 'next/link'
 
 export default function Lesson() {
 
   const { user } = useAppSelector(state => state.user)
   const [lesson, setLesson] = useState<LessonsProps>()
-  const [lessonPage, setLessonPage] = useState<PagesProps>()
+  const [lessonPage, setLessonPage] = useState<PagesProps[]>([])
   const [page, setPage] = useState(1)
   const params = useParams<{
     courseid: string;
@@ -44,7 +45,7 @@ export default function Lesson() {
   useEffect(() => {
     if (!user || !lesson?.id) return
     async function getLessonContent() {
-        const url = `http://localhost/ppproject/public/api/v1/lessons/${lesson?.id}/pages/${page}`
+        const url = `http://localhost/ppproject/public/api/v1/lessons/${lesson?.id}/pages`
         const token = localStorage.getItem('user_token') || ''
         const res = await fetch(url, {
           method: 'GET',
@@ -61,7 +62,7 @@ export default function Lesson() {
 
       getLessonContent()
 
-  }, [lesson?.id, page])
+  }, [lesson?.id])
 
   function hanldeBack() {
     if (page != 1) {
@@ -73,29 +74,35 @@ export default function Lesson() {
       setPage(prev => prev + 1)
   }
 
-
-
   return (
     <article className={styles.main}>
       <h1 className={styles.title}>{lesson?.title}</h1>
-      <p className={styles.content}>{lessonPage?.content}</p>
+      <p className={styles.content}>{lessonPage[page - 1]?.content}</p>
       <div className={styles.navigation}>
-        {page !== 1 ? 
+        {page !== 1 ?
           <button
             className={`${styles.navButton} ${styles.navButtonBack}`}
             onClick={hanldeBack}
           >
             Назад
-          </button> : 
+          </button> :
           null}
           <p className={styles.pageNumber}>{page}</p>
-        <button
+        {page < lessonPage.length ? <button
           className={`${styles.navButton} ${styles.navButtonForward}`}
-           onClick={hanldeForward}
+          onClick={hanldeForward}
         >
           Вперед
-        </button>
+        </button> : null}
       </div>
+      {page >= lessonPage.length ?
+        <Link
+          href={`/courses/${params?.courseid}`}
+          className={styles.link}
+        >
+          Вы прошли урок. Вернуться обратно к курсу
+          </Link> :
+          null}
     </article>
   )
 }
