@@ -10,8 +10,6 @@ import { CourseProps } from '@/types/types'
 export default function Profile() {
   const params = useParams<{userid: string}>()
   const {user} = useAppSelector(state => state.user)
-  console.log("user.user_id", user?.user_id)
-  console.log("params?.userid", params?.userid)
   if (!user || user.user_id != params?.userid) {
     return <NotLoggedIn />
   }
