@@ -13,7 +13,6 @@ const Home = () => {
   const {user} = useAppSelector(state => state.user)
 
   useEffect(() => {
-    if (!user) return
     async function getCourses(){
       const res = await fetch('http://localhost/ppproject/public/api/v1/pcourses')
       const data = await res.json()
