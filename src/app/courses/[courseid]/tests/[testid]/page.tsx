@@ -32,8 +32,6 @@ export default function Test() {
   }
 
   useEffect(() => {
-    if (!user || params?.courseid || page === questions.length) return
-
     async function getQuestions(){
       const url = `http://localhost/ppproject/public/api/v1/courses/${params?.courseid}/tests/${params?.testid}/questions`
       const token = user ? localStorage.getItem('user_token') : ''
@@ -45,6 +43,7 @@ export default function Test() {
         }
       })
       const data = await res.json()
+      console.log(data)
       setQuestions(data)
     }
 
@@ -54,7 +53,7 @@ export default function Test() {
 
   const progress = (page - 1) / questions.length === 0 ? '20px' : `${((page - 1) / questions.length) * 100}%`
   console.log(progress)
-
+  console.log(answers)
   return (
     <main className={styles.main}>
       <div
@@ -70,10 +69,10 @@ export default function Test() {
               className={styles.radioGroup}
               value={selectedOption}
               options={[
-                {value: 'a', label: questions[page - 1].option_a},
-                {value: 'b', label: questions[page - 1].option_b},
-                {value: 'c', label: questions[page - 1].option_c},
-                {value: 'd', label: questions[page - 1].option_d},
+                {value: 'a', label: questions[page - 1]?.option_a},
+                {value: 'b', label: questions[page - 1]?.option_b},
+                {value: 'c', label: questions[page - 1]?.option_c},
+                {value: 'd', label: questions[page - 1]?.option_d},
               ]}
             />
           <div className={styles.navigation}>
