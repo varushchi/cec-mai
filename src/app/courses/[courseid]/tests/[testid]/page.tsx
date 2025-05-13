@@ -12,11 +12,9 @@ function getResults(answs: boolean[]){
   const length = answs.length
   let correct = 0
   answs.forEach(answ => {
-    if (answ) correct = correct + 1
+    if (answ==true) correct = correct + 1
   })
-
-  return Math.round(correct / length)
-
+  return Math.round(correct*100 / length)
 }
 
 export default function Test() {
@@ -28,7 +26,6 @@ export default function Test() {
   const [answers, setAnswers] = useState<boolean[]>([])
   const [isDone, setIsDone] = useState(false)
   const params = useParams<{courseid: string, testid: string}>()
-
   function handleNext(isLast = false){
     const result = selectedOption === questions[page - 1].correct_option
       setAnswers(prev => [...prev, result])
