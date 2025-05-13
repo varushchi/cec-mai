@@ -8,6 +8,17 @@ import type { RadioChangeEvent } from 'antd';
 import { Radio } from 'antd';
 import Link from 'next/link'
 
+function getResults(answs: boolean[]){
+  const length = answs.length
+  let correct = 0
+  answs.forEach(answ => {
+    if (answ) correct = correct + 1
+  })
+
+  return Math.round(correct / length)
+
+}
+
 export default function Test() {
 
   const { user } = useAppSelector(state => state.user)
@@ -32,6 +43,8 @@ export default function Test() {
   }
 
   useEffect(() => {
+    if (!user || params?.courseid || page === questions.length) return
+
     async function getQuestions(){
       const url = `http://localhost/ppproject/public/api/v1/courses/${params?.courseid}/tests/${params?.testid}/questions`
       const token = user ? localStorage.getItem('user_token') : ''
@@ -53,7 +66,7 @@ export default function Test() {
 
   const progress = (page - 1) / questions.length === 0 ? '20px' : `${((page - 1) / questions.length) * 100}%`
   console.log(progress)
-  console.log(answers)
+
   return (
     <main className={styles.main}>
       <div
@@ -95,7 +108,7 @@ export default function Test() {
           </div>
         </section> :
         <section className={styles.sectionSaved}>
-          <h1 className={styles.saved}>Ответы сохранены</h1>
+          <h1 className={styles.saved}>Результат: {getResults(answers)}%</h1>
           <Link href={`/courses/${params?.courseid}`} className={styles.link}>Вернуться к курсу</Link>
         </section>}
     </main>

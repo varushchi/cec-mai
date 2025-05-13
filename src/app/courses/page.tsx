@@ -78,7 +78,6 @@ export default function Courses() {
       async function getCourses(){
         const url = user ? 'http://localhost/ppproject/public/api/v1/courses' : 'http://localhost/ppproject/public/api/v1/pcourses'
         const token = user ? localStorage.getItem('user_token') : ''
-        console.log(token)
         const res = await fetch(url, {
           method: 'GET',
           headers: {
@@ -87,10 +86,8 @@ export default function Courses() {
           }
         })
         const data = await res.json()
-        console.log(data)
         setCourses(data.data)
       }
-  
       getCourses()
     }, [user])
 
