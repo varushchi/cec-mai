@@ -43,7 +43,7 @@ export default function Test() {
   }
 
   useEffect(() => {
-    if (!user || params?.courseid || page === questions.length) return
+    if (!user) return
 
     async function getQuestions(){
       const url = `http://localhost/ppproject/public/api/v1/courses/${params?.courseid}/tests/${params?.testid}/questions`
