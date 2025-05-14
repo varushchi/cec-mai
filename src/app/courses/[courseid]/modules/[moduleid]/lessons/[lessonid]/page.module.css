@@ -16,7 +16,7 @@
   padding: 40px 20px;
   border-radius: 20px;
   border: 3px solid var(--color-gray-400);
-  height: 500px;
+  height: 300px;
   overflow-y: auto;
 }
 
@@ -36,6 +36,7 @@
   color: var(--color-blue);
   transition: all 0.3s ease;
   font-size: var(--font-size-md);
+  width: fit-content;
 }
 
 .navButton:hover{
@@ -48,6 +49,7 @@
 
 .navButtonForward{
   grid-column: 3;
+  justify-self: end;
 }
 
 .pageNumber{

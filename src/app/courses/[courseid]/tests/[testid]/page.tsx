@@ -12,11 +12,9 @@ function getResults(answs: boolean[]){
   const length = answs.length
   let correct = 0
   answs.forEach(answ => {
-    if (answ) correct = correct + 1
+    if (answ==true) correct = correct + 1
   })
-
-  return Math.round(correct / length)
-
+  return Math.round(correct*100 / length)
 }
 
 export default function Test() {
@@ -28,7 +26,6 @@ export default function Test() {
   const [answers, setAnswers] = useState<boolean[]>([])
   const [isDone, setIsDone] = useState(false)
   const params = useParams<{courseid: string, testid: string}>()
-
   function handleNext(isLast = false){
     const result = selectedOption === questions[page - 1].correct_option
       setAnswers(prev => [...prev, result])
@@ -43,7 +40,7 @@ export default function Test() {
   }
 
   useEffect(() => {
-    if (!user || params?.courseid || (page > questions.length)) return
+    if (!user) return
 
     async function getQuestions(){
       const url = `http://localhost/ppproject/public/api/v1/courses/${params?.courseid}/tests/${params?.testid}/questions`
@@ -56,6 +53,7 @@ export default function Test() {
         }
       })
       const data = await res.json()
+      console.log(data)
       setQuestions(data)
     }
 
@@ -64,6 +62,7 @@ export default function Test() {
   }, [user, params])
 
   const progress = (page - 1) / questions.length === 0 ? '20px' : `${((page - 1) / questions.length) * 100}%`
+  console.log(progress)
 
   return (
     <main className={styles.main}>
@@ -80,10 +79,10 @@ export default function Test() {
               className={styles.radioGroup}
               value={selectedOption}
               options={[
-                {value: 'a', label: questions[page - 1].option_a},
-                {value: 'b', label: questions[page - 1].option_b},
-                {value: 'c', label: questions[page - 1].option_c},
-                {value: 'd', label: questions[page - 1].option_d},
+                {value: 'a', label: questions[page - 1]?.option_a},
+                {value: 'b', label: questions[page - 1]?.option_b},
+                {value: 'c', label: questions[page - 1]?.option_c},
+                {value: 'd', label: questions[page - 1]?.option_d},
               ]}
             />
           <div className={styles.navigation}>
