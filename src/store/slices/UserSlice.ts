@@ -8,7 +8,14 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  user: null,
+  user: {
+    name: 'Даниил',
+    email: 'daniilliguy@mai.education',
+    surname: 'Лигай',
+    user_id: '1',
+    department: '307',
+    isAdmin: true
+  },
   loading: false,
 };
 

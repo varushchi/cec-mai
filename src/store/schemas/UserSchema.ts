@@ -15,7 +15,9 @@ export const UserSchema = z.object({
   user_id: z.string(),
   name: Name,
   surname: Surname,
-  email: MaiEmail
+  email: MaiEmail,
+  department: z.string().optional(),
+  isAdmin: z.boolean().optional()
 })
 
 export const NameSchema = z.object({
