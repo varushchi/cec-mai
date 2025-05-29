@@ -1,125 +1,149 @@
 'use client'
-import React, { useState } from 'react';
-import type { TableColumnsType, TableProps } from 'antd';
-import { Table } from 'antd';
+import React from 'react';
+import { DownOutlined } from '@ant-design/icons';
+import type { TableColumnsType } from 'antd';
+import { Badge, Dropdown, Space, Table } from 'antd';
 import styles from './page.module.css'
 
-interface UserTypes {
-  id: string,
-  name: string,
-  surname: string,
-  email: string,
-  department: string,
-  courses: string
-
+interface courseType {
+  course_id: string;
+  title: string;
+  completed_at: string;
+  persantage: string;
+  days_since: string;
+  time_spent: string;
 }
 
-type OnChange = NonNullable<TableProps<UserTypes>['onChange']>;
+interface tableTypes {
+  user_id: string;
+  name: string;
+  surname: string;
+  department: string;
+  last_login: string;
+  latest_test_score: string;
+  latest_test_date: string;
+  total_completed: string;
+  courses: courseType[];
+}
 
-type GetSingle<T> = T extends (infer U)[] ? U : never;
-type Sorts = GetSingle<Parameters<OnChange>[2]>;
-
-
-const data: UserTypes[] = [
+// Sample data for courses (nested table)
+const coursesData: courseType[] = [
   {
-    id: '1',
-    name: 'Даниил',
-    surname: 'Лигай',
-    email: 'daniilliguy@mai.education',
-    department: '307',
-    courses: 'Python basics, mathplotlib'
+    course_id: 'c1',
+    title: 'Python basics',
+    completed_at: '11.04.2025',
+    persantage: '100 %',
+    days_since: '5',
+    time_spent: '4:30'
   },
   {
-    id: '2',
-    name: 'Иван',
-    surname: 'Иванов',
-    email: 'ivan@mai.education',
-    department: '311',
-    courses: ''
+    course_id: 'c2',
+    title: 'Matplotlib',
+    completed_at: '16.04.2025',
+    persantage: '95 %',
+    days_since: '10',
+    time_spent: '6:15'
   },
   {
-    id: '3',
-    name: 'Сергей',
-    surname: 'Петров',
-    email: 'ser.pet@mai.education',
-    department: '805',
-    courses: 'mathplotlib'
-  },
-  {
-    id: '4',
-    name: 'Алексеей',
-    surname: 'Сидиров',
-    email: 'alexsidor@mai.education',
-    department: '307',
-    courses: 'Python basics, mathplotlib, pandas'
-  },
-  {
-    id: '5',
-    name: 'Артем',
-    surname: 'Учин',
-    email: 'uchkin@mai.education',
-    department: '503',
-    courses: 'pandas'
-  },
+    course_id: 'c3',
+    title: 'Pandas',
+    completed_at: '21.04.2025',
+    persantage: '80 %',
+    days_since: '15',
+    time_spent: '3:30'
+  }
 ];
 
-function Statistics() {
-  const [sortedInfo, setSortedInfo] = useState<Sorts>({});
+// Sample data for main table
+const usersData: tableTypes[] = [
+  {
+    user_id: 'u1',
+    name: 'Даниил',
+    surname: 'Лигай',
+    department: '307',
+    last_login: '23.04.2025',
+    latest_test_score: '80 %',
+    latest_test_date: '21.04.2025',
+    total_completed: '3',
+    courses: coursesData
+  },
+  {
+    user_id: 'u2',
+    name: 'Вадим',
+    surname: 'Щиголев',
+    department: '307',
+    last_login: '23.04.2025',
+    latest_test_score: '80 %',
+    latest_test_date: '19.04.2025',
+    total_completed: '2',
+    courses: [coursesData[0], coursesData[1]]
+  },
+  {
+    user_id: 'u3',
+    name: 'Иван',
+    surname: 'Иванов',
+    department: '502',
+    last_login: '23.04.2025',
+    latest_test_score: '90 %',
+    latest_test_date: '23.04.2025',
+    total_completed: '1',
+    courses: [coursesData[2]]
+  }
+];
 
-  const handleChange: OnChange = (_pagination, _filters, sorter) => {
-    setSortedInfo(sorter as Sorts);
-  };
+// Columns for the expanded row (courses table)
+const courseColumns: TableColumnsType<courseType> = [
+  { title: 'Название курса', dataIndex: 'title', key: 'title' },
+  { 
+    title: 'Статус', 
+    key: 'status', 
+    render: () => <Badge status="success" text="Завершено" /> 
+  },
+  { title: 'Дата завершения', dataIndex: 'completed_at', key: 'completed_at' },
+  { title: 'Процент выполнения', dataIndex: 'persantage', key: 'persantage' },
+  { title: 'Дней с момента завершения', dataIndex: 'days_since', key: 'days_since' },
+  { title: 'Затраченное время', dataIndex: 'time_spent', key: 'time_spent' }
+];
 
+// Columns for the main table (users table)
+const userColumns: TableColumnsType<tableTypes> = [
+  {
+    title: 'ФИО',
+    key: 'full_name',
+    render: (_, record) => `${record.surname} ${record.name}`
+  },
+  { title: 'Кафедра', dataIndex: 'department', key: 'department' },
+  { title: 'Последний вход', dataIndex: 'last_login', key: 'last_login' },
+  { title: 'Оценка за последний тест', dataIndex: 'latest_test_score', key: 'latest_test_score' },
+  { title: 'Дата последнего теста', dataIndex: 'latest_test_date', key: 'latest_test_date' },
+  { title: 'Завершено курсов', dataIndex: 'total_completed', key: 'total_completed' }
+];
 
-  const columns: TableColumnsType<UserTypes> = [
-    {
-      title: 'Имя',
-      dataIndex: 'name',
-      key: 'name',
-      sorter: (a, b) =>  ('' + a.name).localeCompare(b.name),
-      sortOrder: sortedInfo.columnKey === 'name' ? sortedInfo.order : null,
-      ellipsis: true,
-    },
-    {
-      title: 'Фамилия',
-      dataIndex: 'surname',
-      key: 'surname',
-      sorter: (a, b) =>  ('' + a.surname).localeCompare(b.surname),
-      sortOrder: sortedInfo.columnKey === 'surname' ? sortedInfo.order : null,
-      ellipsis: true,
-    },
-    {
-      title: 'Почта',
-      dataIndex: 'email',
-      key: 'email',
-      ellipsis: true,
-    },
-    {
-      title: 'Кафедра',
-      dataIndex: 'department',
-      key: 'department',
-      sorter: (a, b) =>  ('' + a.department).localeCompare(b.department),
-      sortOrder: sortedInfo.columnKey === 'department' ? sortedInfo.order : null,
-      ellipsis: true,
-    },
-    {
-      title: 'Пройденные курсы',
-      dataIndex: 'courses',
-      key: 'courses',
-      sorter: (a, b) =>  ('' + a.courses).localeCompare(b.courses),
-      sortOrder: sortedInfo.columnKey === 'courses' ? sortedInfo.order : null,
-      ellipsis: true,
-    },
-  ];
+// Expanded row render function for the nested table
+const expandedRowRender = (record: tableTypes) => (
+  <Table<courseType>
+    columns={courseColumns}
+    dataSource={record.courses}
+    pagination={false}
+    rowKey="course_id"
+  />
+);
 
-  return (
-    <main className={styles.main}>
-      <h1>Система мониторинга</h1>
-      <div className={styles.tableDiv}>
-        <Table<UserTypes> columns={columns} dataSource={data} onChange={handleChange} />
-      </div>
-    </main>
-  );
-};
+const App: React.FC = () => (
+  <main className={styles.main}>
+    <Table<tableTypes>
+      columns={userColumns}
+      expandable={{ 
+        expandedRowRender,
+        defaultExpandedRowKeys: ['u1'] // Expand first row by default
+      }}
+      dataSource={usersData}
+      rowKey="user_id"
+      bordered
+      size="middle"
+    />
+    <button className={styles.button}>Экспортировать таблицу</button>
+  </main>
+);
 
-export default Statistics;
+export default App;

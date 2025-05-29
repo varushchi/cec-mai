@@ -6,6 +6,24 @@ import { CourseProps } from '@/types/types'
 import CourseCard from '@/components/CourseCard/CourseCard'
 import styles from './page.module.css'
 
+const courseHolder: CourseProps[] = [
+  {
+    id: '1',
+    title: 'Основы Python',
+    status: 'available'
+  },
+  {
+    id: '2',
+    title: 'Matplotlib',
+    status: 'available'
+  },
+  {
+    id: '3',
+    title: 'Pandas',
+    status: 'available'
+  },
+]
+
 const CoursesWOUser = memo(function CoursesWOUser({ courses }: { courses: CourseProps[] }) {
 
   const coursesELem = courses.map(course => {
@@ -97,7 +115,7 @@ export default function Courses() {
       <div className={styles.main}>
         <h1 className={styles.header}>Курсы Python</h1>
           {user ?
-            <CoursesWUser courses={courses}/> :
+            <CoursesWUser courses={courseHolder}/> :
             <CoursesWOUser courses={courses}/>
           }
       </div>

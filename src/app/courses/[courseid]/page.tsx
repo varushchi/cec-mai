@@ -8,6 +8,63 @@ import styles from './page.module.css'
 import { useAppSelector } from '@/store/hooks';
 import { useParams } from 'next/navigation';
 
+const courseHolder: CourseProps = {
+    id: '1',
+    title: 'Основы Python',
+    status: 'available'
+  }
+
+const modulesHolder: ModulesProps[] = [
+  {
+    id: 1,
+    course_id: 1,
+    title: 'Введение: переменные и типы данных'
+  },
+  {
+    id: 2,
+    course_id: 1,
+    title: 'Структуры данных'
+  }
+]
+
+const lessonsHolder: LessonsProps[][] = [
+  [
+    {
+      id: 1,
+      module_id: 1,
+      title: 'Знакомство с переменными',
+      order: 1
+    },
+    {
+      id: 2,
+      module_id: 1,
+      title: 'Типы данных',
+      order: 1
+    },
+    {
+      id: 3,
+      module_id: 1,
+      title: 'Правила наименования',
+      order: 1
+    },
+    {
+      id: 4,
+      module_id: 1,
+      title: 'Преобразование типов данных',
+      order: 1
+    },
+  ]
+]
+
+const testHolder: TestsProps[] = [
+  {
+    id: 1,
+    course_id: 1,
+    module_id: 1,
+    title: 'Тест: знакомство с переменными'
+  }
+]
+
 function Lesson({index, title, id, course_id, module_id}: {index: number, title: string, id: number, course_id: string, module_id: number}) {
   return(
     <Link className={styles.link} href={`/courses/${course_id}/modules/${module_id}/lessons/${id}`}>
@@ -29,15 +86,11 @@ function Test({index, title, id, course_id}: {index: number, title: string, id: 
 export default function Course() {
 
   const { user } = useAppSelector(state => state.user)
-  const [modules, setModules] = useState<ModulesProps[]>([])
+  const [modules, setModules] = useState<ModulesProps[]>(modulesHolder)
   const courseid = useParams<{courseid: string}>()
-  const [course, setCourse] = useState<CourseProps>({
-  id: courseid?.courseid || '',
-  title: '',
-  description: ''
-  })
-  const [lessons, setLessons] = useState<LessonsProps[][]>([])
-  const [tests, setTests] = useState<TestsProps[]>([])
+  const [course, setCourse] = useState<CourseProps>(courseHolder)
+  const [lessons, setLessons] = useState<LessonsProps[][]>(lessonsHolder)
+  const [tests, setTests] = useState<TestsProps[]>(testHolder)
 
   const getToken = (): string => localStorage.getItem('user_token') || ''
 
@@ -173,14 +226,14 @@ export default function Course() {
   return (
     <main className={styles.main}>
       <section className={styles.section}>
-        <h1>Модули {course?.title}</h1>
+        <h1>Модули &quot;{course?.title}&quot;</h1>
         <p className={styles.description}>{course?.description}</p>
         <div className={styles.modules}>
           {modulesElem}
         </div>
       </section>
       <section className={styles.section}>
-        <h1>Тесты {course?.title}</h1>
+        <h1>Тесты	&quot;{course?.title}&quot;</h1>
         <div className={styles.tests}>
           <Collapse items={Testitems} className={styles.collapse}/>
         </div>

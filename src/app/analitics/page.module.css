@@ -1,9 +1,14 @@
 .main{
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
-  width: 70%;
+  padding-inline: 30px;
   margin-inline: auto;
   align-items: center;
   margin-top: 100px;
+}
+
+.button{
+  padding: 20px;
+  background-color: var(--color-gray-200);
+  color: var(--color-blue);
+  font-size: var(--font-size-lg);
+  border-radius: 20px;
 }

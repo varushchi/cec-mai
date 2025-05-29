@@ -8,6 +8,30 @@ import type { RadioChangeEvent } from 'antd';
 import { Radio } from 'antd';
 import Link from 'next/link'
 
+const questionHandle: Questions[] = [
+  {
+    id: 1,
+    test_id: 1,
+    question: 'Какая переменная из представленных названа правильно?',
+    option_a: '2variable',
+    option_b: 'variable_name',
+    option_c: '_variable',
+    option_d: 'variable name',
+    correct_option: 'b'
+  },
+  {
+    id: 2,
+    test_id: 1,
+    question: 'Как привести переменную variable к строке?',
+    option_a: 'variable.to_String',
+    option_b: "'variable'",
+    option_c: 'str(variable)',
+    option_d: 'String(variable)',
+    correct_option: 'c'
+  }
+
+]
+
 function getResults(answs: boolean[]){
   const length = answs.length
   let correct = 0
@@ -20,7 +44,7 @@ function getResults(answs: boolean[]){
 export default function Test() {
 
   const { user } = useAppSelector(state => state.user)
-  const [questions, setQuestions] = useState<Questions[]>([])
+  const [questions, setQuestions] = useState<Questions[]>(questionHandle)
   const [page, setPage] = useState(1)
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [answers, setAnswers] = useState<boolean[]>([])

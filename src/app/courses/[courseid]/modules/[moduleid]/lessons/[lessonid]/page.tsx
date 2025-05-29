@@ -6,11 +6,45 @@ import { useAppSelector } from '@/store/hooks'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 
+const lessonHolder: LessonsProps = {
+  id: 1,
+  module_id: 1,
+  title: 'Знакомство с переменными',
+  order: 1
+}
+
+const PagesHolder: PagesProps[] = [
+  {
+    id: 1,
+    lesson_id: 1,
+    content: `Что такое Python?
+    Python — это высокоуровневый, интерпретируемый язык программирования, созданный Гвидо ван Россумом в начале 1990-х годов.
+
+    Он популярен благодаря:
+    - Простому синтаксису (читается как английский язык)
+    - Большому количеству библиотек
+    - Кроссплатформенности (работает на Windows, macOS, Linux)
+
+    Python широко используется:
+    
+    Анализе данных
+    
+    `
+  },
+  {
+    id: 2,
+    lesson_id: 1,
+    content: ''
+  }
+]
+
+
+
 export default function Lesson() {
 
   const { user } = useAppSelector(state => state.user)
-  const [lesson, setLesson] = useState<LessonsProps>()
-  const [lessonPage, setLessonPage] = useState<PagesProps[]>([])
+  const [lesson, setLesson] = useState<LessonsProps>(lessonHolder)
+  const [lessonPage, setLessonPage] = useState<PagesProps[]>(PagesHolder)
   const [page, setPage] = useState(1)
   const params = useParams<{
     courseid: string;

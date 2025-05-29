@@ -7,6 +7,24 @@ import { useEffect, useState } from "react";
 import { CourseProps } from '@/types/types'
 import CourseCardPlane from "@/components/CourseCardPlane/CourseCardPlane";
 
+const courseHolder: CourseProps[] = [
+  {
+    id: '1',
+    title: 'Основы Python',
+    status: 'available'
+  },
+  {
+    id: '2',
+    title: 'Matplotlib',
+    status: 'available'
+  },
+  {
+    id: '3',
+    title: 'Pandas',
+    status: 'available'
+  },
+]
+
 const Home = () => {
 
   const [courses, setCourses] = useState<CourseProps[]>([])
@@ -28,7 +46,7 @@ const Home = () => {
     <div className={styles.main}>
       <h1 className={styles.header}>Мониторинг повышения квалификации преподавателей</h1>
       <p className={`${styles.paragraph} ${styles.bold}`}>Дипломный проект студентов МАИ 307 кафедры</p>
-      <p className={styles.paragraph}>Приложение для препадаветелей МАИ повысить свою квалификацию <br/> в области программирования и получить сертикат</p>
+      <p className={styles.paragraph}>Приложение для преподаветелей МАИ, позволяющее повысить свою квалификацию <br/> в области программирования</p>
 
       {!user ?
         <div className={styles.container}>
@@ -51,14 +69,14 @@ const Home = () => {
             width: `max(calc(${courses.length} * 300px), 90%)`
           }}
         >
-          {courses.map((course, index) => {
+          {courseHolder.map((course, index) => {
             return(
               <div
                 key={course.id}
                 className={styles.course}
                 style={{
-                  animationDelay: `calc(30s / ${courses.length} * (${courses.length} - ${index + 1}) * -1)`,
-                  left: `max(calc(300px * ${courses.length}), 100%)`
+                  animationDelay: `calc(30s / ${courseHolder.length} * (${courseHolder.length} - ${index + 1}) * -1)`,
+                  left: `max(calc(300px * ${courseHolder.length}), 100%)`
                 }}
                 >
                 <CourseCardPlane courses = {course}/>

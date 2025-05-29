@@ -38,7 +38,9 @@ export default function Profile() {
           <Link href={'/adminpanel'} className={styles.link}>Админ панель</Link>
           <Link href={'/analitics'} className={styles.link}>Статистика</Link>
         </section> :
-        null}
+        <section>
+          <Link href={'/adminpanel'} className={styles.link}>Импортировать курс</Link>
+        </section>}
     </main>
   );
 }
